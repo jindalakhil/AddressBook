@@ -20,7 +20,7 @@ public class Contact {
 		this.phoneNumber=phoneNumber;
 		this.email=email;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Contact [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city=" + city
