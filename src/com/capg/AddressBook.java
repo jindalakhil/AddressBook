@@ -89,4 +89,15 @@ public class AddressBook {
 		 else
 			 return "No contact found with this name";
 	 }
+	
+	public void deleteContact(String firstName) {
+		for(Contact x : book) {
+			if(x.firstName.equalsIgnoreCase(firstName)) {
+				book.remove(x);
+				System.out.println("Contact deleted");
+				return;
+			}
+		}
+		System.out.println("Contact not found");
+	}
 }
