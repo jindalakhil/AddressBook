@@ -2,6 +2,21 @@ package com.capg;
 import java.util.*;
 
 public class AddressBook {
+	
+	private String name = null;
+	
+	public AddressBook(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	List<Contact> book = new ArrayList<>();
 
 	public List<Contact> getBook() {
@@ -99,5 +114,14 @@ public class AddressBook {
 			}
 		}
 		System.out.println("Contact not found");
+	}
+	
+	public boolean hasContact(String firstName) {
+		for(Contact x : book) {
+			if(x.firstName.equalsIgnoreCase(firstName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

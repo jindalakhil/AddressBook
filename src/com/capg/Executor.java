@@ -3,56 +3,45 @@ package com.capg;
 import java.io.*;
 import java.util.*;
 
-public class Executor {
 
+public class Executor {
+	private static TreeMap<String, AddressBook> tm = new TreeMap<>();
+	
 	public static void main(String[] args) {
-		System.out.println("Welcome to Adress Book");
-		AddressBook obj = new AddressBook();
 		Scanner sc = new Scanner(System.in);
-		int i = 1;
-		while (i != 0) {
-			String firstName = "";
-			System.out.println("Enter 1 to add a contact");
-			System.out.println("Enter 2 to edit the contact");
-			System.out.println("Enter 3 to delete the contact");
+		Executor ex = new Executor();
+		int i =1;
+		while(i!=0) {
+			System.out.println("Enter 1 to create new address book");
+			System.out.println("Enter 2 to edit existing address book");
+			System.out.println("Enter 3 to delete addressbook");
 			System.out.println("Enter 0 to exit");
+			String name = null;
 			i = sc.nextInt();
 			sc.nextLine();
-			switch (i) {
+			switch(i) {
 			case 1:
-				System.out.println("Enter the first name: ");
-				String fname = sc.nextLine();
-				System.out.println("Enter last name: ");
-				String lname = sc.nextLine();
-				System.out.println("Enter address: ");
-				String address = sc.nextLine();
-				System.out.println("Enter city: ");
-				String city = sc.nextLine();
-				System.out.println("Enter state: ");
-				String state = sc.nextLine();
-				System.out.println("Enter zip: ");
-				long zip = sc.nextLong();
-				System.out.println("Enter phone number: ");
-				sc.nextLine();
-				String phoneNumber = sc.nextLine();
-				System.out.println("Enter email: ");
-				String email = sc.nextLine();
-				Contact contact = new Contact(fname, lname, address, city, state, zip, phoneNumber, email);
-				obj.addContact(contact);
-				obj.viewBook(obj.getBook());
+				System.out.println("Enter the name for address book you want to create");
+				name = sc.nextLine();
+				ex.createAddressBook(name, sc);
 				break;
 			case 2:
-				System.out.println("Update Contact:");
-				System.out.println("Enter first name: ");
-				firstName = sc.nextLine();
-				obj.updateContact(firstName, sc);
+				System.out.println("Enter the name for address book you want to edit");
+				Set set = tm.entrySet();
+			    Iterator it = set.iterator();
+			 
+			    // Display elements
+			    while(it.hasNext()) {
+			      Map.Entry me = (Map.Entry)it.next();
+			      System.out.print("AddressBook is: "+me.getKey() );
+			    } 
+				name = sc.nextLine();
+				ex.editAddressBook(name);
 				break;
 			case 3:
-				System.out.println("Delete Contact:");
-				System.out.println("Enter first name: ");
-				firstName = sc.nextLine();
-				obj.deleteContact(firstName);
-				obj.viewBook(obj.book);
+				System.out.println("Enter the name for address book you want to delete");
+				name = sc.nextLine();
+				ex.deleteAddressBook(name);
 				break;
 			case 0:
 				System.out.println("Exiting the process");
@@ -61,7 +50,46 @@ public class Executor {
 				System.out.println("Enter valid entry");
 			}
 		}
-
+	}
+	
+	public void createAddressBook(String name, Scanner sc) {
+		if(checkExistance(name)) {
+			System.out.println("AddressBook with this name already esists");
+			return;
+		}
+		AddressBook book = new AddressBook(name);
+		tm.put(name, book);
+		System.out.println("If you want to add contacts to " + name + " press y");
+		if("y".equals(sc.nextLine())) {
+			editAddressBook(name);
+		}
+	}
+	
+	public void editAddressBook(String name) {
+		if(!checkExistance(name)) {
+			System.out.println("AddressBook with this name don't esists");
+			return;
+		}
+		AddressBook book = tm.get(name);
+		System.out.println("You are currently in: " + book.getName());
+		AddressFunction fun = new AddressFunction();
+		fun.function(book);
+	}
+	
+	public void deleteAddressBook(String name) {
+		if(checkExistance(name)) {
+			tm.remove(name);
+			System.out.println("AddressBook with name " + name + " deleted.");
+			return;
+		}
+		System.out.println("AddressBook with this name not esists");
+	}
+	
+	public boolean checkExistance(String name) {
+		if(tm.containsKey(name)) {
+			return true;
+		}
+		return false;
 	}
 
 }
